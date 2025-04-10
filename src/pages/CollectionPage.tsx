@@ -24,7 +24,11 @@ const CollectionPage: FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(fetchProductsByFilters({ collection, ...queryParams }));
+    if (collection) {
+      dispatch(fetchProductsByFilters({ collection, ...queryParams }));
+    } else {
+      console.error("Collection is undefined");
+    }
   }, [dispatch, collection, queryParams]);
 
   const toggleSidebar = () => {

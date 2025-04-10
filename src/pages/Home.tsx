@@ -44,11 +44,16 @@ const Home: FC = () => {
     bestSeller();
   }, [dispatch]);
 
+  useEffect(() => {
+    console.log("VITE_BACKEND_URL: ", import.meta.env.VITE_BACKEND_URL);
+  }, []);  
+
   return (
     <div>
       <HeroSection />
       <GenderCollectionSection />
       <NewArrivals />
+
       {/* Best Seller */}
       <h2 className="text-3xl text-center font-bold mb-4">Best Seller</h2>
       {bestSellerProduct ? (

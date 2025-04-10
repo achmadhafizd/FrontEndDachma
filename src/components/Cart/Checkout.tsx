@@ -15,7 +15,7 @@ type Product = {
   price: number;
 };
 
-interface PaymentDetails {
+export interface PaymentDetails {
   paymentDetails: {
     transactionId: string;
     paymentGateway: string;
@@ -42,7 +42,7 @@ const Checkout: FC = () => {
   );
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const [checkoutId, setCheckoutId] = useState< string | null>(null);
+  const [checkoutId, setCheckoutId] = useState<string | null>(null);
   const [shippingAddress, setShippingAddress] = useState<FormCheckout>({
     firstName: "",
     lastName: "",
@@ -70,8 +70,8 @@ const Checkout: FC = () => {
           paymentMethod: "PayPal",
           totalPrice: cart.totalPrice,
         })
-      )
-      console.log("Res Payload Id :", res.payload._id)
+      );
+      console.log("Res Payload Id :", res.payload._id);
 
       if (res.payload && res.payload._id) {
         setCheckoutId(res.payload._id); // Set Checkout ID if checkout was succesful
@@ -80,8 +80,13 @@ const Checkout: FC = () => {
   };
 
   const handlePaymentSuccess = async (details: PaymentDetails) => {
+    if (!checkoutId) {
+      console.error("Checkout ID is undefined");
+      return;
+    }
+
     try {
-      const response = await axios.put(
+      await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/pay`,
         {
           paymentStatus: "paid",
@@ -93,18 +98,25 @@ const Checkout: FC = () => {
           },
         }
       );
-      await handleFinalizeCheckout(checkoutId); // Finalize checkout if payment succesful
+
+      await handleFinalizeCheckout(checkoutId);
     } catch (error) {
-      console.error(error);
+      console.error("Payment update failed:", error);
     }
   };
 
   const handleFinalizeCheckout = async (checkoutId: string | null) => {
+    if (!checkoutId) {
+      console.error("Checkout ID is null");
+      return;
+    }
+
     try {
-      const response = await axios.post(
+      await axios.post(
         `${
           import.meta.env.VITE_BACKEND_URL
-        }/api/checkout/${checkoutId}/finalize`,{},
+        }/api/checkout/${checkoutId}/finalize`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("userToken")}`,
@@ -113,7 +125,7 @@ const Checkout: FC = () => {
       );
       navigate("/order-confirmation");
     } catch (error) {
-      console.error(error);
+      console.error("Failed to finalize checkout:", error);
     }
   };
 

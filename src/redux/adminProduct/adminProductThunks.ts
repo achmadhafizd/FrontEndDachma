@@ -82,7 +82,7 @@ export const deleteProduct = createAsyncThunk(
           },
         }
       );
-      return id
+      return {id, Product: response.data};
     } catch (error) {
       const axiosError = error as AxiosError;
       return rejectWithValue(

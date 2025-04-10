@@ -45,14 +45,14 @@ const OrderConfirmation: FC = () => {
             <div>
               <p className="text-emerald-700 text-sm">
                 Estimated Delivery:{" "}
-                {calculateEstimatedDelivery(checkout.createdAt)}
+                {calculateEstimatedDelivery(new Date(checkout.createdAt))}
               </p>
             </div>
           </div>
           {/* Ordered Items */}
           <div className="mb-20">
             {checkout.checkoutItems.map((item) => (
-              <div className="flex items-center mb-4" key={item.productId}>
+              <div className="flex items-center mb-4" key={item.id}>
                 <img
                   src={item.image}
                   alt={item.name}

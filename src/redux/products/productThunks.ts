@@ -64,7 +64,7 @@ export const updateProduct = createAsyncThunk(
           },
         }
       );
-      return { id, productData };
+      return { id, productData, updatedProduct: response.data };
     } catch (error) {
       const axiosError = error as AxiosError;
       return rejectWithValue(

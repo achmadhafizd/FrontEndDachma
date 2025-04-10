@@ -27,11 +27,11 @@ const UserManagement: FC = () => {
     }
   }, [user, navigate]);
 
-  useEffect(()=>{
-    if(user && user.role === "admin"){
+  useEffect(() => {
+    if (user && user.role === "admin") {
       dispatch(fetchUsers());
     }
-  },[user, dispatch]);
+  }, [user, dispatch]);
 
   const [formData, setFormData] = useState<FormUserProps>({
     name: "",
@@ -168,7 +168,11 @@ const UserManagement: FC = () => {
                   <select
                     value={user.role}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                      handleRoleChange(user._id, e.target.value)
+                      user._id &&
+                      handleRoleChange(
+                        user._id,
+                        e.target.value as "admin" | "customer"
+                      )
                     }
                     className="p-2 border border-gray-300 rounded"
                   >
@@ -178,7 +182,7 @@ const UserManagement: FC = () => {
                 </td>
                 <td className="p-4 ">
                   <button
-                    onClick={() => handleDeleteUser(user._id)}
+                    onClick={() => handleDeleteUser(user._id!)}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                   >
                     Delete

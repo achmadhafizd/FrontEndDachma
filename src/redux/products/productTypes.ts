@@ -15,10 +15,30 @@ export interface ProductFilterParams {
     url: string;
     altText: string;
   }[];
+  name?: string;
+  price?: number;
 }
 export interface UpdateProductParams {
   id: string;
-  productData: ProductFilterParams;
+  productData: {
+    name: string;
+    description: string;
+    price: number;
+    countInStock: number;
+    sku: string;
+    category: string;
+    brand: string;
+    sizes: string[];
+    colors: string[];
+    collections: string[];
+    material: string;
+    gender: string;
+    images: {
+      url: string;
+      altText: string;
+    }[];
+    altText?: string;
+  };
 }
 
 interface Product {
@@ -39,6 +59,7 @@ interface Product {
   }[];
   sku?: string;
   collections?: string[];
+  originalPrice?: number;
 
   // EXCLUDE API
   description?: string;

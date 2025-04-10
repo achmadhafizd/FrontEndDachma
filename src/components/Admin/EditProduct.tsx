@@ -15,7 +15,7 @@ interface ProductDataProps {
   brand: string;
   sizes: Array<string>;
   colors: Array<string>;
-  collections: string;
+  collections: string[];
   material: string;
   gender: string;
   images: {
@@ -42,7 +42,7 @@ const EditProduct: FC = () => {
     brand: "",
     sizes: [],
     colors: [],
-    collections: "",
+    collections: [],
     material: "",
     gender: "",
     images: [],
@@ -58,7 +58,41 @@ const EditProduct: FC = () => {
 
   useEffect(() => {
     if (selectedProduct) {
-      setProductData(selectedProduct);
+      const {
+        name = "",
+        description = "",
+        price = 0,
+        countInStock = 0,
+        sku = "",
+        category = "",
+        brand = "",
+        sizes = [],
+        colors = [],
+        collections = [],
+        material = "",
+        gender = "",
+        images = [],
+      } = selectedProduct;
+
+      setProductData({
+        name,
+        description,
+        price,
+        countInStock,
+        sku,
+        category,
+        brand,
+        sizes: Array.isArray(sizes) ? sizes : [],
+        colors: Array.isArray(colors) ? colors : [],
+        collections: Array.isArray(collections)
+          ? collections
+          : collections
+          ? [collections]
+          : [],
+        material,
+        gender,
+        images,
+      });
     }
   }, [selectedProduct]);
 
@@ -90,7 +124,10 @@ const EditProduct: FC = () => {
       );
       setProductData((prevData) => ({
         ...prevData,
-        images: [...prevData.images, { url: data.imageUrl, altText: data.altText }],
+        images: [
+          ...prevData.images,
+          { url: data.imageUrl, altText: data.altText },
+        ],
       }));
 
       setUploading(false);
@@ -103,6 +140,7 @@ const EditProduct: FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!id) return;
     dispatch(updateProduct({ id, productData }));
     console.log(productData);
     navigate(`/admin/products`);

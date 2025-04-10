@@ -1,9 +1,10 @@
 import { FC } from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PaymentDetails } from "./Checkout";
 
 interface PayPalButtonProps {
   amount: number;
-  onSuccess: () => void;
+  onSuccess: (details: PaymentDetails) => void;
   onError: () => void;
 }
 
@@ -20,13 +21,38 @@ const PayPalButton: FC<PayPalButtonProps> = ({
     >
       <PayPalButtons
         style={{ layout: "vertical" }}
-        createOrder={(data, actions) => {
+        createOrder={(_data, actions) => {
           return actions.order.create({
-            purchase_units: [{ amount: { value: parseFloat(amount).toFixed(2) } }],
+            intent: "CAPTURE",
+            purchase_units: [
+              {
+                amount: {
+                  currency_code: "USD",
+                  value: parseFloat(amount.toString()).toFixed(2),
+                },
+              },
+            ],
           });
         }}
-        onApprove={(data, actions) => {
-          return actions.order?.capture().then(onSuccess);
+        onApprove={async (_, actions) => {
+          if (actions.order) {
+            const details = await actions.order.capture();
+            const paymentDetails: PaymentDetails = {
+              paymentDetails: {
+                transactionId: details.id ?? "unknown",
+                paymentGateway: "paypal",
+                amount: parseFloat(
+                  details.purchase_units?.[0]?.payments?.captures?.[0]?.amount
+                    ?.value ?? "0"
+                ),
+                currency:
+                  details.purchase_units?.[0]?.payments?.captures?.[0]?.amount
+                    ?.currency_code ?? "USD",
+              },
+            };
+
+            onSuccess(paymentDetails);
+          }
         }}
         onError={onError}
       />

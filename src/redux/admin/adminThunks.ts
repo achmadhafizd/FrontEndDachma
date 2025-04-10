@@ -61,7 +61,7 @@ export const updateUser = createAsyncThunk(
           },
         }
       );
-      return { id, userData };
+      return { id, userData, User: response.data };
     } catch (error) {
       console.error(error);
       const axiosError = error as AxiosError;
@@ -85,7 +85,7 @@ export const deleteUser = createAsyncThunk(
           },
         }
       );
-      return id;
+      return {id, userDetails: response.data};
     } catch (error) {
       console.error(error);
       const axiosError = error as AxiosError;

@@ -16,7 +16,7 @@ const ProductManagement: FC = () => {
   useEffect(() => {
     dispatch(fetchAdminProducts());
     console.log(adminProducts)
-  }, [dispatch]);
+  }, [dispatch, adminProducts]);
 
   const handleDeleteProduct = (id: string) => {
     if (window.confirm("Are you sure want to delete the product?")) {
@@ -62,7 +62,7 @@ const ProductManagement: FC = () => {
                       Edit
                     </Link>
                     <button
-                      onClick={() => handleDeleteProduct(product._id)}
+                      onClick={() => handleDeleteProduct(product._id!)}
                       className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                     >
                       Delete

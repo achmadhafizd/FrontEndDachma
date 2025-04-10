@@ -9,6 +9,7 @@ export interface ProductParams {
   gender?: string;
   material?: string;
   brand?: string;
+  sku?: string;
   collection?: string;
   images?: {
     url: string;

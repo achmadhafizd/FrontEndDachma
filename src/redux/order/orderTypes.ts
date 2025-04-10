@@ -27,6 +27,7 @@ export interface Order {
   status: string;
   createdAt: string;
   updatedAt: string;
+  shippingMethod?: string;
 }
 
 export interface OrderState {

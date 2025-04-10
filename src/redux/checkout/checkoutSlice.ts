@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createCheckoutSession } from "./checkoutThunks";
+import { CheckoutProps } from "./checkoutTypes";
+
+const initialState: CheckoutProps = {
+  checkout: null,
+  loading: false,
+  error: null as string | null,
+};
 
 const checkoutSlice = createSlice({
   name: "checkout",
-  initialState: {
-    checkout: null,
-    loading: false,
-    error: null as string | null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder

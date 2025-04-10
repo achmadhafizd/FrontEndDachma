@@ -39,7 +39,8 @@ const adminSlice = createSlice({
 
       //   handle delete user
       .addCase(deleteUser.fulfilled, (state, action) => {
-        state.users = state.users.filter((user) => user._id !== action.payload);
+        const {id} = action.payload
+        state.users = state.users.filter((user) => user._id !== id);
       })
 
       // handle add user

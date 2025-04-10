@@ -13,6 +13,9 @@ interface CartItem {
   name: string;
   price: number;
   quantity: number;
+  color?: string;
+  size?: string;
+  image: string;
 }
 
 export interface CheckoutData {
@@ -20,4 +23,24 @@ export interface CheckoutData {
   shippingAddress: FormCheckout;
   paymentMethod: string;
   totalPrice: number;
+}
+
+export interface CheckoutDataType {
+  _id: string;
+  checkoutItems: CartItem[];
+  shippingAddress: FormCheckout;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  paymentMethod: string;
+  totalPrice: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CheckoutProps {
+  checkout: CheckoutDataType | null;
+  loading: boolean;
+  error: string | null;
 }
